@@ -1,0 +1,6 @@
+#!/bin/sh
+rm -r 0 1
+rm log_Allrun rodAxVSy.ps rodBzVSy.ps
+rm -r postProcessing
+rm -r constant/polyMesh/*
+

@@ -1,0 +1,12 @@
+#!/bin/sh
+cp -r 0_orig 0
+blockMesh
+setFields
+rodFoam
+postProcess -func 'components(A)' -time 1
+postProcess -func 'components(B)' -time 1
+postProcess -func singleGraph -time 1
+gnuplot rodComparisonAxBz.plt
+gv rodAxVSy.ps&  # Graphviz-open source photos 
+gv rodBzVSy.ps&
+

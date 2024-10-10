@@ -1,0 +1,152 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.5                                   |
+|   \\  /    A nd           | Web:      http://www.openfoam.org               |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+    class           dictionary;
+    object          blockMeshDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+scale 1e-4;
+
+mergeType points; //Or: blockMesh -merge-points
+
+wedgeAngle              2.5;
+rodRadius               9.9;
+airRadius               999;
+tanAlpha                #calc  "tan(0.5*degToRad($wedgeAngle))";
+posRodZ                 #calc  "$rodRadius*$tanAlpha";
+negRodZ                 #calc  "- $posRodZ ";
+posAirZ                 #calc  "$airRadius*$tanAlpha ";
+negAirZ                 #calc  "- $posAirZ ";
+
+vertices        
+(
+    	(0 0 0)            	  // vertex #0
+    	(100 0 0)          	  // vertex #1
+ 	(100 $rodRadius $posRodZ) // vertex #2
+        (0 $rodRadius  $posRodZ)  // vertex #3
+        (0 $rodRadius $negRodZ)   // vertex #4
+ 	(100 $rodRadius $negRodZ) // vertex #5
+	(0 $airRadius $posAirZ)   // vertex #6
+	(100 $airRadius $posAirZ) // vertex #7
+	(100 $airRadius $negAirZ) // vertex #8
+	(0 $airRadius $negAirZ)   // vertex #9	
+);
+
+blocks          
+(
+        hex (0 1 5 4 0 1 2 3) (30 6 1) simpleGrading (1 1 1) // block #0
+	hex (4 5 8 9 3 2 7 6) (30 599 1) simpleGrading (1 1 1)   // block #1
+);
+
+edges           
+(
+);
+
+boundary
+(
+    leftWall
+    {
+        type patch;
+        faces
+        (
+            (3 4 0 0)
+        );
+    }
+    rightWall
+    {
+        type patch;
+        faces
+        (
+            (1 5 2 1)
+        );
+    }
+    
+    atmosphereTop 
+    {
+        type patch;
+        faces
+        (
+            (9 6 7 8)
+        );
+    }
+
+    atmosphereRight
+    {
+        type patch;
+        faces
+        (
+            (3 6 9 4)
+        );
+    }
+
+    atmosphereLeft
+    {
+        type patch;
+        faces
+        (
+            (5 8 7 2)
+        );
+    }
+
+    axis   
+    {
+        type empty;
+        faces
+        (
+            (0 1 1 0)
+        );
+    }
+
+    rodBack 
+    {
+        type wedge;
+        faces
+        (
+            (0 4 5 1)
+        );
+    }
+
+    rodFront  
+    {
+        type wedge;
+        faces
+        (
+            (0 1 2 3)
+        );
+    }
+
+    airBack 
+    {
+        type wedge;
+        faces
+        (
+            (4 9 8 5)
+        );
+    }
+
+    airFront  
+    {
+        type wedge;
+        faces
+        (
+            (3 2 7 6)
+        );
+    }
+);
+
+mergePatchPairs
+(
+);
+
+// ************************************************************************* //
