@@ -111,6 +111,10 @@ int main(int argc, char *argv[])
             U = HbyA - rAU*fvc::grad(p);
             U.correctBoundaryConditions();
         }
+        
+        // sEqn
+	solve(fvm::ddt(s) + fvm::div(phi,s));
+
 
         runTime.write();
 
@@ -119,7 +123,7 @@ int main(int argc, char *argv[])
             << nl << endl;
     }
 
-    solve(fvm::ddt(s) + fvm::div(phi,s));
+   
 
     Info<< "End\n" << endl;
 
