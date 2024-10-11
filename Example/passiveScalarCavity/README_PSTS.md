@@ -1,3 +1,6 @@
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
 Title: Implement a passive scalar transport solver<br>
 标题：实现被动标量传输求解器<br>
 
