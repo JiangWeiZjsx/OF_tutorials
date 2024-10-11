@@ -10,30 +10,30 @@ passiveScalarPimpleFoam：标量传输求解器<br>
     └── passiveScalarIcoFoam.C<br>
 
 passiveScalarPitzDaily：运行实例<br>
-    case
-    │   ├── 0
-    │   │   ├── U
-    │   │   ├── p
-    │   │   └── s
-    │   ├── cavity.OpenFOAM
-    │   ├── constant
-    │   │   ├── polyMesh
-    │   │   │   ├── boundary
-    │   │   │   ├── faces
-    │   │   │   ├── neighbour
-    │   │   │   ├── owner
-    │   │   │   └── points
-    │   │   └── transportProperties
-    │   └── system
-    │       ├── blockMeshDict
-    │       ├── controlDict
-    │       ├── fvSchemes
-    │       ├── fvSolution
-    │       └── setFieldsDict
+    case<br>
+    │   ├── 0<br>
+    │   │   ├── U<br>
+    │   │   ├── p<br>
+    │   │   └── s<br>
+    │   ├── cavity.OpenFOAM<br>
+    │   ├── constant<br>
+    │   │   ├── polyMesh<br>
+    │   │   │   ├── boundary<br>
+    │   │   │   ├── faces<br>
+    │   │   │   ├── neighbour<br>
+    │   │   │   ├── owner<br>
+    │   │   │   └── points<br>
+    │   │   └── transportProperties<br>
+    │   └── system<br>
+    │       ├── blockMeshDict<br>
+    │       ├── controlDict<br>
+    │       ├── fvSchemes<br>
+    │       ├── fvSolution<br>
+    │       └── setFieldsDict<br>
 
 实现步骤：<br>
 求解器<br>
-1. 被动标量传输方程：$\frac{\partial s}{\partial t}+\nabla\cdot(\mathbf{u}\mathrm{~}s)=0$
+1. 被动标量传输方程：$$\frac{\partial s}{\partial t}+\nabla\cdot(\mathbf{u}\mathrm{~}s)=0$$
 2. 根据以下条件修改求解器：1) 在 createFields.H 中读取 volumeScalarField s (参考p); 2) 在 passiveScalarIcoFoam.C 中的 runTime.write() 语句前添加方程 solve(fvm::ddt(s) + fvm::div(phi, s));
 3. 修改Make/files 和 Make/options, 用 wmake 命令编译 passiveScalarIcoFoam
 
